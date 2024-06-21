@@ -19,39 +19,27 @@ import RequireAuth from './RequireAuth'
 import YodlrApi from './api/api'
 
 function App() {
-  const [currentUser, setCurrentUser] = useState(null)
-  const [token, setToken] = useState(() => localStorage.getItem('token') || null)
+  const [currentUser, setCurrentUser] = useState(() => {
+    const storedUser = localStorage.getItem('currentUser');
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
 
   useEffect(() => {
-    if (token) {
-      YodlrApi.token = token;
-      localStorage.setItem('token', token);
-      const decoded = jwtDecode(token);
-      async function getUser() {
-        let user = await YodlrApi.getUser(decoded.username);
-        setCurrentUser(user);
-      }
-      getUser();
+    if (currentUser) {
+      localStorage.setItem('currentUser', JSON.stringify(currentUser));
     } else {
-      YodlrApi.token = null;
-      localStorage.removeItem('token');
-      setCurrentUser(null);
+      localStorage.removeItem('currentUser');
     }
-  }, [token])
+  }, [currentUser]);
 
   const login = async (data) => {
-    const token = await YodlrApi.login(data);
-    YodlrApi.token = token;
-    setToken(token);
-    const user = await YodlrApi.getUser(data.username);
+    const user = await YodlrApi.login(data);
+    console.log(user);
     setCurrentUser(user);
   }
 
   const signup = async (data) => {
-    const token = await YodlrApi.signup(data);
-    YodlrApi.token = token;
-    setToken(token);
-    const user = await YodlrApi.getUser(data.username);
+    const user = await YodlrApi.createUser(data);
     setCurrentUser(user);
   }
 
@@ -62,13 +50,11 @@ function App() {
 
   const logout = () => {
     setCurrentUser(null);
-    YodlrApi.token = null;
-    setToken(null);
   }
-  
-  const handleActive = async (data) => {
-    const user = await YodlrApi.handleActive(data);
-    return user.active;
+
+  const handleActiv = async (data) => {
+    const user = await YodlrApi.handleActiv(data);
+    return user.activ;
   }
 
   const userLoader = async ({ params }) => {
@@ -96,7 +82,7 @@ function App() {
 
   return (
     <div className='App'>
-      <AuthContext.Provider value={{ currentUser, login, signup, updateUser, logout, handleActive }}>
+      <AuthContext.Provider value={{ currentUser, login, signup, updateUser, logout, handleActiv }}>
         <RouterProvider router={router} />
       </AuthContext.Provider>
     </div>

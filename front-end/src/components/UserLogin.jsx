@@ -11,8 +11,7 @@ function UserLogin() {
     let from = location.state?.from?.pathname || "/feed";
 
     const INITIAL_STATE = {
-        username: "",
-        password: ""
+        email: ""
     };
     const [formData, setFormData] = useState(INITIAL_STATE);
 
@@ -35,23 +34,14 @@ function UserLogin() {
         <div className="UserLogin">
             <h3>Log In</h3>
             <form className="UserLogin-form" onSubmit={handleSubmit}>
-                <label htmlFor="username">Username</label>
+                <label htmlFor="email">Email</label>
                 <input
-                    id="username"
-                    name="username"
-                    autoComplete="username"
-                    value={formData.username}
+                    id="email"
+                    name="email"
+                    value={formData.email}
                     onChange={handleChange}
                 />
-                <label htmlFor="password">Password</label>
-                <input
-                    id="password"
-                    name="password"
-                    type="password"
-                    autoComplete="current-password"
-                    value={formData.password}
-                    onChange={handleChange}
-                />
+
                 <button >Submit</button>
             </form>
         </div>

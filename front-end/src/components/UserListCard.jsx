@@ -2,16 +2,16 @@ import AuthContext from "../AuthContext";
 import "./UserListCard.css";
 
 function UserListCard({ user }) {
-  const { currentUser, handleActive } = useContext(AuthContext);
-  const [active, setActive] = useState(user.active);
+  const { currentUser, handleactiv } = useContext(AuthContext);
+  const [activ, setactiv] = useState(user.activ);
 
   const handleClick = async () => {
     let data = {
       username: currentUser.username,
       userId: user.id
     }
-    let handleActive = await handleActive(data);
-    setActive(handleActive);
+    let handleactiv = await handleactiv(data);
+    setActiv(handleActiv);
   }
 
   return (
@@ -23,8 +23,8 @@ function UserListCard({ user }) {
           <p>Equity: <b>{user.equity}</b></p>
           <button
             onClick={handleClick}
-            className={active ? "UserListCard-button active" : "UserListCard-button"}>
-            {active ? "Active" : "Not Active"}
+            className={activ ? "UserListCard-button activ" : "UserListCard-button"}>
+            {activ ? "Active" : "Not Active"}
           </button>
         </div>
       </div>

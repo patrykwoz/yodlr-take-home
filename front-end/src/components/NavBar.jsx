@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom"
 import { useContext } from "react"
 import AuthContext from "../AuthContext"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHouse, faBuilding, faSuitcase, } from '@fortawesome/free-solid-svg-icons'
+import { faHouse, faUsers } from '@fortawesome/free-solid-svg-icons'
 import './NavBar.css'
 
 function NavBar() {
@@ -21,14 +21,8 @@ function NavBar() {
                         <>
                             <li className="NavBar-primary-item">
                                 <NavLink className="NavBar-primary-item-inside-container" to="/companies">
-                                    <FontAwesomeIcon icon={faBuilding} />
-                                    <p>Companies</p>
-                                </NavLink>
-                            </li>
-                            <li className="NavBar-primary-item">
-                                <NavLink className="NavBar-primary-item-inside-container" to="/jobs">
-                                    <FontAwesomeIcon icon={faSuitcase} />
-                                    <p>Jobs</p>
+                                    <FontAwesomeIcon icon={faUsers} />
+                                    <p>Users</p>
                                 </NavLink>
                             </li>
                             <li className="NavBar-primary-item">
