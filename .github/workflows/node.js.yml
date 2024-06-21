@@ -1,4 +1,4 @@
-name: Node.js CI for the front-end
+name: Node.js CI for the front-end 🚀
 run-name: ${{ github.actor }} is testing and deploying front-end 🚀
 on:
   push:
