@@ -1,30 +1,32 @@
+import { useState, useContext } from "react";
 import AuthContext from "../AuthContext";
 import "./UserListCard.css";
 
 function UserListCard({ user }) {
-  const { currentUser, handleactiv } = useContext(AuthContext);
-  const [activ, setactiv] = useState(user.activ);
+  const { handleState } = useContext(AuthContext);
+  const [state, setState] = useState(user.state);
 
   const handleClick = async () => {
+    let userState = state === "active" ? "pending" : "active";
     let data = {
-      username: currentUser.username,
-      userId: user.id
+      id: user.id,
+      state: userState
     }
-    let handleactiv = await handleactiv(data);
-    setActiv(handleActiv);
+    user = await handleState(data);
+    setState(user.state);
   }
 
   return (
     <li className="UserListCard">
       <div className="UserListCard-container">
         <div className="UserListCard-text">
-          <h3>{user.title}</h3>
-          <p>Salary: <b>{user.salary}</b></p>
-          <p>Equity: <b>{user.equity}</b></p>
+          <h3>{user.firstName} {user.lastName}</h3>
+          <p>email: <b>{user.email}</b></p>
+
           <button
             onClick={handleClick}
-            className={activ ? "UserListCard-button activ" : "UserListCard-button"}>
-            {activ ? "Active" : "Not Active"}
+            className={`UserListCard-button user-${state}`}>
+            {state}
           </button>
         </div>
       </div>

@@ -16,21 +16,21 @@ router.get('/', function (req, res) {
 });
 
 /* Create a new user */
-router.post('/', function(req, res) {
+router.post('/', function (req, res) {
   var newUser = req.body;
   var existingUser = _.find(users, { email: newUser.email });
-  
+
   if (existingUser) {
     return res.status(400).json({ error: 'User already exists' });
   }
-  
+
   newUser.id = curId++;
   if (!newUser.state) {
     newUser.state = 'pending';
   }
   users[newUser.id] = newUser;
 
-  fs.writeFile(filePath, JSON.stringify({ data: users }, null, 2), function(err) {
+  fs.writeFile(filePath, JSON.stringify({ data: users }, null, 2), function (err) {
     if (err) {
       log.error('Error writing file', err);
       return res.status(500).json({ error: 'Failed to write data' });
@@ -65,19 +65,34 @@ router.put('/:id', function (req, res, next) {
     return next(new Error('ID paramter does not match body'));
   }
   users[user.id] = user;
-  log.info('Updating user', user);
-  res.json(user);
+  fs.writeFile(filePath, JSON.stringify({ data: users }, null, 2), function (err) {
+    if (err) {
+      log.error('Error writing file', err);
+      return res.status(500).json({ error: 'Failed to write data' });
+    }
+    log.info('Updated user', user);
+    res.json(user);
+  }
+  );
 });
 
 /* Handle user state */
 router.post('/:id/state', function (req, res, next) {
-  var user = users[req.params.id];
+  var user = users[req.body.id];
   if (!user) {
     return next();
   }
   user.state = req.body.state;
-  log.info('Updating user state', user);
-  res.json(user);
+
+  fs.writeFile(filePath, JSON.stringify({ data: users }, null, 2), function (err) {
+    if (err) {
+      log.error('Error writing file', err);
+      return res.status(500).json({ error: 'Failed to write data' });
+    }
+    log.info('Updated user state', user);
+    res.json(user);
+  });
+
 });
 
 /* Login user by email */

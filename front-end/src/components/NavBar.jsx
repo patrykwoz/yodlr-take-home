@@ -20,13 +20,13 @@ function NavBar() {
                     {currentUser && (
                         <>
                             <li className="NavBar-primary-item">
-                                <NavLink className="NavBar-primary-item-inside-container" to="/companies">
+                                <NavLink className="NavBar-primary-item-inside-container" to="/users/admin">
                                     <FontAwesomeIcon icon={faUsers} />
                                     <p>Users</p>
                                 </NavLink>
                             </li>
                             <li className="NavBar-primary-item">
-                                <NavLink className="NavBar-primary-item-inside-container" to={`/users/${currentUser.username}`}>
+                                <NavLink className="NavBar-primary-item-inside-container" to={`/users/${currentUser.id}`}>
                                     <div className="NavBar-primary-item-inside-headshot-container">
                                         <img className="NavBar-primary-item-inside-headshot" src={currentUser.photo_url} alt="headshot" />
                                     </div>

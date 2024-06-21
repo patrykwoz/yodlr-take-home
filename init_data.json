@@ -5,7 +5,7 @@
       "email": "kyle@getyodlr.com",
       "firstName": "Kyle",
       "lastName": "White",
-      "state": "active"
+      "state": "pending"
     },
     "2": {
       "id": 2,
@@ -29,16 +29,15 @@
       "state": "pending"
     },
     "5": {
-      "email": "mack@mack.com",
-      "firstName": "Mack",
+      "firstName": "Mack II",
       "lastName": "Mackowsky",
-      "id": 5,
-      "state": "pending"
+      "email": "mack@mack.com",
+      "id": 5
     },
     "6": {
-      "email": "ryan@mack.com",
-      "firstName": "Ryan",
-      "lastName": "TheBear",
+      "email": "elizabeth@mack.com",
+      "firstName": "Fox",
+      "lastName": "The Queen",
       "id": 6,
       "state": "pending"
     }

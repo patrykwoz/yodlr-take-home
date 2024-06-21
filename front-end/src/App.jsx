@@ -8,12 +8,13 @@ import {
   redirect,
   createRoutesFromElements
 } from 'react-router-dom'
-import { jwtDecode } from 'jwt-decode'
 import HomePage from './components/HomePage'
 import Header from './components/Header'
 import UserLogin from './components/UserLogin'
 import UserSignup from './components/UserSignup'
-import UserAdmin from './components/UserAdmin'
+import UserList from './components/UserList'
+import UserProfile from './components/UserProfile'
+import UserUpdate from './components/UserUpdate'
 import AuthContext from './AuthContext'
 import RequireAuth from './RequireAuth'
 import YodlrApi from './api/api'
@@ -34,7 +35,6 @@ function App() {
 
   const login = async (data) => {
     const user = await YodlrApi.login(data);
-    console.log(user);
     setCurrentUser(user);
   }
 
@@ -44,7 +44,7 @@ function App() {
   }
 
   const updateUser = async (data) => {
-    const user = await YodlrApi.updateUser(currentUser.username, data);
+    const user = await YodlrApi.updateUser(currentUser.id, data);
     setCurrentUser(user);
   }
 
@@ -52,17 +52,27 @@ function App() {
     setCurrentUser(null);
   }
 
-  const handleActiv = async (data) => {
-    const user = await YodlrApi.handleActiv(data);
-    return user.activ;
+  const handleState = async (data) => {
+    const user = await YodlrApi.handleState(currentUser.id, data);
+    return user;
   }
 
   const userLoader = async ({ params }) => {
-    const user = await YodlrApi.getUser(params.username);
+    const user = await YodlrApi.getUser(params.id);
+
     if (!user) {
-      throw new Response('User not found', { status: 404 })
+      throw new Error('Fetching user failed')
     }
-    return user;
+    return { user };
+  }
+
+  const usersLoader = async () => {
+    const users = await YodlrApi.getUsers();
+
+    if (!users) {
+      throw new Error('Fetching users failed')
+    }
+    return { users };
   }
 
   const router = createBrowserRouter(
@@ -73,7 +83,11 @@ function App() {
           <Route element={< HomePage />} path='feed' />
           <Route element={< UserLogin />} path='login' />
           <Route element={< UserSignup />} path='signup' />
-          <Route element={<RequireAuth>< UserAdmin /></RequireAuth>} path='users/admin' />
+          <Route element={<RequireAuth>< UserList /></RequireAuth>}
+            path='users/admin'
+            loader={usersLoader} />
+          <Route element={<RequireAuth>< UserProfile /></RequireAuth>} path='users/:id' loader={userLoader} />
+          <Route element={<RequireAuth>< UserUpdate /></RequireAuth>} path='users/:id/edit' />
           <Route element={< Navigate to='feed' />} path='*' />
         </Route>
       </>
@@ -82,7 +96,7 @@ function App() {
 
   return (
     <div className='App'>
-      <AuthContext.Provider value={{ currentUser, login, signup, updateUser, logout, handleActiv }}>
+      <AuthContext.Provider value={{ currentUser, login, signup, updateUser, logout, handleState }}>
         <RouterProvider router={router} />
       </AuthContext.Provider>
     </div>

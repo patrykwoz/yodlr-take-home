@@ -33,7 +33,7 @@ class YodlrApi {
         return response.data;
     }
 
-    static async handleUserState(id, data) {
+    static async handleState(id, data) {
         const response = await axios.post(`${BASE_URL}/users/${id}/state`, data);
         return response.data;
     }
